@@ -1,0 +1,7 @@
+{
+    "AA_rate_min": 8,
+    "AA_debt_rate_min": 10,
+    "request_interval_market": 2.2,
+    "request_interval_api": 6.1,
+    "waiting_time_for_rerty": 300
+}
