@@ -1,0 +1,26 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<div class="alert alert-danger fade in box boxshadow" style="text-align:center"><button type="button" class="close" data-dismiss="alert">×</button>注意：点击“更新逾期”开关，会将更新逾期功能的剩余有效天数重置为 30 天。</div>
+<br />
+<div class="alert alert-info">
+<form action="/account/user-info/{{ current_user.Name}}" method="post" style="text-align:center;font-size:16px" target="nm_iframe">
+	{{ form.hidden_tag() }}
+	散标投资：<i class="fa fa-toggle-{% if current_user.BidSwitch %}on{% else %}off{% endif %} fa-fw" aria-hidden="true" onclick="$('#bid').click()"></i>
+	<div style="display:inline-block">
+		{{ form.submit_bid(id="bid", style="display:none") }}
+	</div>&emsp;
+	债权投资：<i class="fa fa-toggle-{% if current_user.DebtSwitch %}on{% else %}off{% endif %} fa-fw" aria-hidden="true" onclick="$('#debt').click()"></i>
+	<div style="display:inline-block">
+		{{ form.submit_debt(id="debt", style="display:none") }}
+	</div>&emsp;
+	更新逾期：<i class="fa fa-toggle-{% if current_user.GetOverDueTimes %}on{% else %}off{% endif %} fa-fw" aria-hidden="true" onclick="$('#over_due').click()"></i>
+	<div style="display:inline-block">
+		{{ form.submit_over_due(id="over_due", style="display:none") }}
+	</div>&emsp;
+	三方授权：<i class="fa fa-toggle-{% if current_user.Authorized %}on{% else %}off{% endif %} fa-fw" aria-hidden="true"></i>&emsp;
+	猫币余额：<font{% if current_user.CC < 5 %} color="#FF6633"{% endif %} style="font-weight:900">{{ current_user.CC }}</font>
+</form>
+</div>
+<iframe id="id_iframe" name="nm_iframe" style="display:none"></iframe>
+<script>
+var iframe=document.getElementById("id_iframe");iframe.onload=function(){var a=iframe.contentDocument.body.innerHTML;var b=JSON.parse(a);for(k in b){b[k].forEach(function(c){$(".alert-info").before("<div style='text-align:center' class='alert alert-"+k+" fade in box boxshadow'><button type=button class=close data-dismiss=alert>×</button>"+c+"</div>")})};window.setTimeout(function(){$('[data-dismiss="alert"]').alert("close")},5000)}
+</script>

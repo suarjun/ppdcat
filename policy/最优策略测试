@@ -1,0 +1,43 @@
+{
+    "最优策略测试":{"type":0,
+        "info":{
+            "CurrentRate": [
+                18,
+                22
+            ],
+            "Age": [
+                21,
+                37
+            ],
+            "CreditValidate": 1,
+            "SuccessCount": [
+                2,
+                25
+            ],
+            "NormalCount": [
+                5,
+                1000
+            ],
+            "WasteCount": [
+                0,
+                0
+            ],
+            "FailedCount": [
+                0,
+                0
+            ],
+            "OverdueLessCount": [
+                0,
+                0
+            ],
+            "OverdueMoreCount": [
+                0,
+                0
+            ],
+            "NowLastTime": [
+                62,
+                1000
+            ]
+        }
+    }
+}

@@ -1,0 +1,152 @@
+{
+    "8以上赔标": {
+        "info": {
+            "in": {
+                "CreditCode": [
+                    "AA"
+                ]
+            },
+            "interval": {
+                "CurrentRate": [
+                    8,
+                    999
+                ]
+            }
+        }
+    },
+    "8.5以上赔标": {
+        "info": {
+            "in": {
+                "CreditCode": [
+                    "AA"
+                ]
+            },
+            "interval": {
+                "CurrentRate": [
+                    8.5,
+                    999
+                ]
+            }
+        }
+    },
+    "9以上赔标": {
+        "info": {
+            "in": {
+                "CreditCode": [
+                    "AA"
+                ]
+            },
+            "interval": {
+                "CurrentRate": [
+                    9,
+                    999
+                ]
+            }
+        }
+    },
+    "9.5以上赔标": {
+        "info": {
+            "in": {
+                "CreditCode": [
+                    "AA"
+                ]
+            },
+            "interval": {
+                "CurrentRate": [
+                    9.5,
+                    999
+                ]
+            }
+        }
+    },
+    "10以上赔标": {
+        "info": {
+            "in": {
+                "CreditCode": [
+                    "AA"
+                ]
+            },
+            "interval": {
+                "CurrentRate": [
+                    10,
+                    999
+                ]
+            }
+        }
+    },
+    "10.5以上赔标": {
+        "info": {
+            "in": {
+                "CreditCode": [
+                    "AA"
+                ]
+            },
+            "interval": {
+                "CurrentRate": [
+                    10.5,
+                    999
+                ]
+            }
+        }
+    },
+    "11以上赔标": {
+        "info": {
+            "in": {
+                "CreditCode": [
+                    "AA"
+                ]
+            },
+            "interval": {
+                "CurrentRate": [
+                    11,
+                    999
+                ]
+            }
+        }
+    },
+    "11.5以上赔标": {
+        "info": {
+            "in": {
+                "CreditCode": [
+                    "AA"
+                ]
+            },
+            "interval": {
+                "CurrentRate": [
+                    11.5,
+                    999
+                ]
+            }
+        }
+    },
+    "12以上赔标": {
+        "info": {
+            "in": {
+                "CreditCode": [
+                    "AA"
+                ]
+            },
+            "interval": {
+                "CurrentRate": [
+                    12,
+                    999
+                ]
+            }
+        }
+    },
+    "12.5以上赔标": {
+        "info": {
+            "in": {
+                "CreditCode": [
+                    "AA"
+                ]
+            },
+            "interval": {
+                "CurrentRate": [
+                    12.5,
+                    999
+                ]
+            }
+        }
+    }
+}

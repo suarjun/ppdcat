@@ -1,0 +1,15 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<div style="text-align:center">
+	<br />
+	<form action="/account/modify-pw/{{ current_user.Name}}" method="post" target="nm_iframe">
+		{{ form.hidden_tag() }}
+		{{ form.old_password(class="btn btn-info box boxshadow textshadow", style="width:100px") }}
+		{{ form.new_password(class="btn btn-info box boxshadow textshadow", style="width:100px") }}
+		{{ form.confirm(class="btn btn-info box boxshadow textshadow", style="width:100px") }}
+		{{ form.submit(class="btn btn-warning box boxshadow textshadow", style="width:100px;font-weight:900") }}
+	</form>
+	<iframe id="id_iframe" name="nm_iframe" style="display:none"></iframe>
+	<script>
+var iframe=document.getElementById("id_iframe");iframe.onload=function(){var a=iframe.contentDocument.body.innerHTML;var b=JSON.parse(a);for(k in b){b[k].forEach(function(c){$("form").prepend("<div class='alert alert-"+k+" fade in box boxshadow'><button type=button class=close data-dismiss=alert>×</button>"+c+"</div>")})}window.setTimeout(function(){$('[data-dismiss="alert"]').alert("close")},5000)};
+	</script>
+</div>

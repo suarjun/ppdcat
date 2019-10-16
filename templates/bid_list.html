@@ -1,0 +1,58 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<div style="text-align:center">
+	<br />
+	<form action="/account/bid-list/{{ current_user.Name}}" method="post" target="nm_iframe">
+		{{ form.hidden_tag() }}
+		<div class="form-group">
+			{{ form.policy_name.label(style="text-align:center;width:100px") }}
+			{{ form.start_date.label(style="text-align:center;width:100px") }}
+			{{ form.end_date.label(style="text-align:center;width:100px") }}
+			{{ form.submit_today_filter.label(style="visibility:hidden;text-align:center;width:100px") }}
+			{{ form.submit_date_filter.label(style="visibility:hidden;text-align:center;width:100px") }}
+			{{ form.submit_no_filter.label(style="visibility:hidden;text-align:center;width:100px") }}
+			<br />
+			{{ form.policy_name(class="btn btn-info box boxshadow textshadow", style="width:100px;height:34px") }}
+			{{ form.start_date(class="btn btn-info box boxshadow textshadow", style="width:100px") }}
+			{{ form.end_date(class="btn btn-info box boxshadow textshadow", style="width:100px") }}
+			{{ form.submit_today_filter(class="btn btn-primary box boxshadow textshadow", style="width:100px;font-weight:900") }}
+			{{ form.submit_date_filter(class="btn btn-primary box boxshadow textshadow", style="width:100px;font-weight:900", onclick='setTimeout(function () {$("#page-wrapper").css("min-height",$("#content").height()+62)},1000)') }}
+			{{ form.submit_no_filter(class="btn btn-primary box boxshadow textshadow", style="width:100px;font-weight:900", onclick='setTimeout(function () {$("#page-wrapper").css("min-height",$("#content").height()+62)},1000)') }}
+		</div>
+	</form>
+	<div class="table-responsive">
+	<table id="bid-list-table" class="table table-condensed table-striped table-bordered table-hover box boxshadow" style="font-size:13px">
+		<caption style="text-align:center"><strong>投标记录列表（总计：<font id="count" color='#228B22'>{{ count if count is not none else 0 }}</font> 个）</strong></caption>
+		<thead>
+			<tr class="info">
+				<th style="text-align:center">策略名称</th>
+				<th style="text-align:center">标的编号</th>
+				<th style="text-align:center">实际投额</th>
+				<th style="text-align:center">投标时间</th>
+				<th style="text-align:center">投标账户</th>
+			</tr>
+		</thead>
+		<tbody>{% for bid in bid_list %}
+			<tr id="list">
+				<td style="text-align:center">{{ bid.PolicyName }}</td>
+				<td style="text-align:center"><a class=url href="https://invest.ppdai.com/loan/info/{{ bid.ListingId }}" target=_blank>{{ bid.ListingId }}</a></td>
+				<td style="text-align:center">{{ bid.ParticipationAmount }}</td>
+				<td style="text-align:center">{{ bid.BidTime }}</td>
+				<td style="text-align:center">{{ bid.User }}</td>
+			</tr>{% endfor %}
+		</tbody>
+	</table>
+	</div>
+	<div class="pagination-wrap">
+		<ul class="pagination">{% set count = count if count is not none else 0 %}{% set total_page = count//limit + (1 if count%limit else 0) %}
+		<li class="disabled">
+			<a>&laquo;</a>
+		</li>{% set ns = namespace(prev=0) %}<!-- 必须采用命名空间才能保证变量在循环中能被重新赋值 -->{% for i in range(1, total_page+1) %}{% if 1 <= i <= 2 or -1 <= i-total_page <= 0 or -1 <= i-1 <= 4 %}{% set ns.prev = i %}
+		<li{% if i == 1 %} class="active"{% endif %}><a href="javascript:void(0)" onclick="gotoPage(this, {{ i }}, '', '{{ form.start_date.data or '' }}', '{{ form.end_date.data or '' }}', {{ total_page }})">{{ i }}</a></li>{% elif ns.prev == i-1 %}<li class="disabled"><a>…</a></li>{% endif %}{% endfor %}
+		<li{% if total_page <= 1 %} class="disabled"><a>&raquo;</a>{% else %}><a href="javascript:void(0)" onclick="gotoPage(this, 2, '', '{{ form.start_date.data or '' }}', '{{ form.end_date.data or '' }}', {{ total_page }})">&raquo;</a>{% endif %}</li>
+		</ul>
+	</div>
+	<iframe id="id_iframe" name="nm_iframe" style="display:none"></iframe>
+	<script>
+var csrftoken=$("#csrf_token").val();$.ajaxSetup({beforeSend:function(b,a){if(!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(a.type)&&!this.crossDomain){b.setRequestHeader("X-CSRFToken",csrftoken)}}});function gotoPage(c,f,e,b,g,d){$.post("/account/bid-list/{{ current_user.Name }}",{offset:20*(f-1),policy_name:e,start_date:b,end_date:g,current_page:f,total_page:d},function(h,a){var i=JSON.parse(h);record_list=i["record_list"]["record_list"];e=", '"+i["record_list"]["policy_name"]+"'";b=", '"+i["record_list"]["start_date"]+"'";g=", '"+i["record_list"]["end_date"]+"'";current_page=i["record_list"]["current_page"];d=i["record_list"]["total_page"];replaceList(record_list);replaceGagination(e,b,g,current_page,d)})}function replaceList(b){var a=$("tbody");a.empty();b.forEach(function(c){a.append('<tr id="list"><td style="text-align:center">'+c["PolicyName"]+'</td><td style="text-align:center"><a class=url href="https://invest.ppdai.com/loan/info/'+c["ListingId"]+'" target=_blank>'+c["ListingId"]+'</a></td><td style="text-align:center">'+c["ParticipationAmount"]+'</td><td style="text-align:center">'+c["BidTime"]+'</td><td style="text-align:center">'+c["User"]+"</td></tr>")})}function replaceGagination(h,e,a,f,j){var g=", '"+j+"'";var b="";if(f==1){b+='<li class="disabled"><a>&laquo;</a></li>'}else{b+='<li><a href="javascript:void(0)" onclick="gotoPage(this,'+(f-1)+h+e+a+g+')">&laquo;</a></li>'}var c=0;for(var d=1;d<=j;d++){if(1<=d&&d<=2||-1<=d-j&&d-j<=0||-1<=d-f&&d-f<=4){c=d;if(d==f){b+=('<li class="active"><a href="javascript:void(0)" onclick="gotoPage(this,'+d+h+e+a+g+')">'+d+"</a></li>")}else{b+=('<li><a href="javascript:void(0)" onclick="gotoPage(this,'+d+h+e+a+g+')">'+d+"</a></li>")}}else{if(c==d-1){b+='<li class="disabled"><a>…</a></li>'}}}if(f==j){b+='<li class="disabled"><a>&raquo;</a></li>'}else{b+=('<li><a href="javascript:void(0)" onclick="gotoPage(this,'+(f+1)+h+e+a+g+')">&raquo;</a></li>')}$("ul.pagination").html(b)}var iframe=document.getElementById("id_iframe");iframe.onload=function(){var b=iframe.contentDocument.body.innerHTML;var i=JSON.parse(b);for(k in i){if(k!="record_list"){i[k].forEach(function(m){$("form").before("<div class='alert alert-"+k+" fade in box boxshadow'><button type=button class=close data-dismiss=alert>×</button>"+m+"</div>")})}else{var e=i[k]["record_list"];var l=", '"+i[k]["policy_name"]+"'";var f=", '"+i[k]["start_date"]+"'";var a=", '"+i[k]["end_date"]+"'";var g=i[k]["count"];var d=i[k]["limit"];var h=i[k]["current_page"];var j=Math.ceil(g/d);var c="";$("#count").text(g);replaceList(e);replaceGagination(l,f,a,h,j)}}window.setTimeout(function(){$('[data-dismiss="alert"]').alert("close")},5000)};
+	</script>
+</div>

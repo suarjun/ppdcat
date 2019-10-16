@@ -1,0 +1,80 @@
+{% import "bootstrap/wtf.html" as wtf %}
+
+<!-- <head>
+	<title>当前预警-拍拍猫</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head> -->
+
+<body>
+	{% for category,message in get_flashed_messages(with_categories=True) %}
+	<div class="alert alert-{{ category }}">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		{{ message }}
+	</div>
+	{% endfor %}
+	<div>
+		<form action="/account/warning/{{ current_user.Name}}" method="post">
+		{{ wtf.quick_form(form) }}
+		</form>
+	</div>
+	<div>
+		<table id="warning-table" class="table table-condensed table-striped table-bordered table-hover" style="font-size:14px">
+			<caption><strong>预警记录列表（总计：{{ count if count is not none else 0 }} 个）</strong></caption>
+			<thead>
+				<tr class="success">
+					<th style="text-align:center">标的编号</th>
+					<th style="text-align:center">今日还款</th>
+					<th style="text-align:center">曾长逾期</th>
+					<th style="text-align:center">征信逾期</th>
+					<th style="text-align:center">平台待还</th>
+					<th style="text-align:center">网贷待还</th>
+					<th style="text-align:center">预警等级</th>
+					<th style="text-align:center">一键转让</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for warning in warning_list %}
+				<tr>
+					<td style="text-align:center"><a class=url href="https://invest.ppdai.com/loan/info/{{ warning.ListingId }}" target=_blank>{{ warning.ListingId }}</a></td>
+					<td style="text-align:center">{{ ['未还', '已还'][warning.PayBack] }}</td>
+					<td style="text-align:center">{{ ['未逾期', '信用卡'][warning.OverdueType] }}</td>
+					<td style="text-align:center">{{ warning.OwingAmount }}</td>
+					<td style="text-align:center">{{ warning.BalAmount }}</td>
+					<td style="text-align:center" bgcolor='{{ ["white", "Gold", "Darkorange", "red", "FireBrick", "DarkRed"][warning.WarningLevel] }}'>{{ ['正常', '易危', '低危', '危险', '高危', '超危'][warning.WarningLevel] }}</td>
+					<td style="text-align:center"><a class=url href="https://invest.ppdai.com/loan/info?id={{ warning.ListingId }}" target=_blank>{{ warning.ListingId }}</a></td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<div class="pagination-wrap">
+			<ul class="pagination">
+			{% set current_page = offset//limit + (1 if offset%limit else 0) %}
+			{% set count = count if count is not none else 0 %}
+			{% set total_page = count//limit + (1 if count%limit else 0) %}
+			<li class="{{ "disabled" if current_page - 1 <= 0 else "" }}">
+				<a href="{% if current_page>1 %}/account/warning/{{ current_user.Name}}?offset={{ (current_page-1)*limit }}&limit={{ limit }}&count={{ count }}{% endif %}">&laquo;</a>
+			</li>
+			{% set ns = namespace(prev=0) %}	<!-- 必须采用命名空间才能保证变量在循环中能被重新赋值 -->
+			{% for i in range(0, total_page) %}
+			{% if -2 < i-0 < 2 or -3< i-total_page < 3 or -2 < i-current_page < 5 %}
+				{% set ns.prev = i %}
+				<li class="{% if i == current_page %}active{% endif %}">
+				<a href="/account/warning/{{ current_user.Name}}?offset={{ i*limit }}&limit={{ limit }}&count={{ count }}">{{ i + 1 }}</a>
+				</li>
+			{% elif ns.prev == i-1 %}
+			<li class="disabled"><a>…</a></li>
+			{% endif %}
+			{% endfor %}
+			<li class="{{ "disabled" if current_page + 1 >= total_page else "" }}">
+				<a href="{% if current_page+1<total_page %}/account/warning/{{ current_user.Name}}?offset={{ (current_page+1)*limit }}&limit={{ limit }}&count={{ count }}{% endif %}">&raquo;</a>
+			</li>
+			</ul>
+		</div>
+	</div>
+</body>

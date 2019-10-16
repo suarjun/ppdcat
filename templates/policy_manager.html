@@ -1,0 +1,88 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<div id='main' class='tableCell'>
+	<div class="alert alert-danger fade in box boxshadow" style="text-align:center">
+		<button type="button" class="close" data-dismiss="alert">×</button>
+		注意：所有操作允许批量进行，批量选择的方式与 Windows 资源管理器保持一致。左键 = 单选；Shiif + 左键 = 连选；Ctrl + 左键 = 点选；Ctrl + A = 全选。
+	</div>
+	<form role="form" class ="form-inline" style="text-align:center" action="/account/policy-manager/{{ current_user.Name }}" method="post" target="nm_iframe">
+		{{ form.hidden_tag() }}
+		<div class="form-group">
+			{{ form.sys_policy.label(class ="control-label", style="text-align:center;width:100px") }}
+			<br />
+			{{ form.sys_policy(class="btn btn-info box boxshadow textshadow", style="width:100px") }}
+		</div>
+		<div class="form-group">
+			{{ form.self_policy.label(class ="control-label", style="text-align:center;width:100px") }}
+			<br />
+			{{ form.self_policy(class="btn btn-info box boxshadow textshadow", style="width:100px") }}
+		</div>
+		<div class="form-group">
+			{{ form.binding.label(class ="control-label", style="text-align:center;width:100px") }}
+			<br />
+			{{ form.binding(class="btn btn-info box boxshadow textshadow", style="width:100px") }}
+		</div>
+		<div class="form-group">
+			{{ form.BidAmount.label(class ="control-label", style="text-align:center;width:100px") }}
+			<br />
+			{{ form.BidAmount(class="btn btn-info box boxshadow textshadow", style="width:100px") }}
+			<br />
+			{{ form.rate.label(class ="control-label", style="text-align:center;width:100px") }}
+			<br />
+			{{ form.rate(class="btn btn-info box boxshadow textshadow", style="width:100px") }}
+			<br />
+		</div>
+		<div class="form-group">
+			{{ form.submit_modify.label(class ="control-label", style="visibility:hidden;text-align:center;width:100px") }}
+			<br />
+			{{ form.submit_modify(class="btn btn-primary box boxshadow textshadow", style="width:100px;font-weight:900") }}
+			<br />
+			{{ form.submit_rate.label(class ="control-label", style="visibility:hidden;text-align:center;width:100px") }}
+			<br />
+			{{ form.submit_rate(class="btn btn-primary box boxshadow textshadow", style="width:100px;font-weight:900") }}
+			<br />
+		</div>
+		<div class="form-group">
+			{{ form.submit_unbind.label(class ="control-label", style="visibility:hidden;text-align:center;width:100px") }}
+			<br />
+			{{ form.submit_unbind(class="btn btn-warning box boxshadow textshadow", style="width:100px;font-weight:900") }}
+			<br />
+			{{ form.submit_del.label(class ="control-label", style="visibility:hidden;text-align:center;width:100px") }}
+			<br />
+			{{ form.submit_del(class="btn btn-danger box boxshadow textshadow", style="width:100px;font-weight:900", onclick="return confirm('是否删除策略？')") }}
+			<br />
+		</div>
+	</form>
+	<br />
+	<div class="table-responsive">
+	<table class="table table-condensed table-striped table-bordered table-hover box boxshadow" style="font-size:14px">
+		<caption style="text-align:center"><strong>策略列表(在用)</strong></caption>
+		<thead>
+			<tr class="info">
+				<th style="text-align:center">策略</th>
+				<th style="text-align:center">单标投资金额</th>
+				<th style="text-align:center">绑定授权</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for name,info in sys_policy_dict.items() %}
+			<tr>
+				<td style="text-align:center">{{ name }}</td>
+				<td style="text-align:center" id={{ name }} class='bid_amount'>{{ info['BidAmount'] }}</td>
+				<td style="text-align:center">{{ info['AuthorizeBinding'] }}</td>
+			</tr>
+			{% endfor %}
+			{% for name,info in self_policy_dict.items() %}
+			<tr>
+				<td style="text-align:center">{{ name }}</td>
+				<td style="text-align:center" id={{ name }} class='bid_amount'>{{ info['BidAmount']}}</td>
+				<td style="text-align:center">{{ info['AuthorizeBinding'] }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	</div>
+	<iframe id="id_iframe" name="nm_iframe" style="display:none"></iframe>
+	<script>
+var iframe=document.getElementById("id_iframe");iframe.onload=function(){var a=iframe.contentDocument.body.innerHTML;var b=JSON.parse(a);for(k in b){b[k].forEach(function(c){$("form").before("<div class='alert alert-"+k+" fade in box boxshadow' style='text-align:center'><button type=button class=close data-dismiss=alert>×</button>"+c+"</div>")})}window.setTimeout(function(){$('[data-dismiss="alert"]').alert("close")},5000)};
+	</script>
+</div>

@@ -1,0 +1,184 @@
+{% import "bootstrap/wtf.html" as wtf %}
+
+<head>
+	<title>查询</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jq-paginator.min.js') }}"></script>
+
+</head>
+
+<body>
+	<form role="form" class ="form-inline" action="/account/query-debt" method="post">
+		<div>
+			{% for field, errors in form.errors.items() %}
+			<div class="alert alert-error" style="width:600px;background:#FF6633">
+				{{ form[field].label }}: {{ ', '.join(errors) }}
+			</div>
+			{% endfor %}
+			<!-- {{ wtf.quick_form(form) }} -->
+			{{ form.hidden_tag() }}
+			<div class ="form-group">
+				{{ form.creditCode.label(class ="control-label", style="text-align:center;width:100px") }}
+				{{ form.currentCreditCode.label(class ="control-label", style="text-align:center;width:100px") }}
+				<br />
+				{{ form.creditCode(class="btn btn-info form-control", style="width:100px") }}
+				{{ form.currentCreditCode(class="btn btn-info form-control", style="width:100px") }}
+			</div>
+			<div class ="form-group">
+				{{ form.start_date.label(class ="control-label", style="text-align:center;width:100px") }}
+				{{ form.leftRepayDay.label(class ="control-label", style="text-align:center;width:100px") }}
+				<br />
+				{{ form.start_date(class="btn btn-info form-control", style="width:100px") }}
+				{{ form.leftRepayDay(class="btn btn-info form-control", style="width:100px") }}
+				<br />
+				{{ form.end_date.label(class ="control-label", style="text-align:center;width:100px") }}
+				{{ form.owingNumber.label(class ="control-label", style="text-align:center;width:100px") }}
+				<br />
+				{{ form.end_date(class="btn btn-info form-control", style="width:100px") }}
+				{{ form.owingNumber(class="btn btn-info form-control", style="width:100px") }}
+			</div>
+			<div class="form-group">
+				{{ form.repaidOther.label(class ="control-label", style="text-align:center;width:100px") }}
+				{{ form.scale_owing_debtAmountMax.label(class ="control-label", style="text-align:center;width:100px") }}
+				<br />
+				{{ form.repaidOther(class="btn btn-info form-control", style="width:100px") }}
+				{{ form.scale_owing_debtAmountMax(class="btn btn-info form-control", style="width:100px") }}
+				<br />
+				{{ form.overdueMoreInDays.label(class ="control-label", style="text-align:center;width:100px") }}
+				{{ form.pastDueNumber.label(class ="control-label", style="text-align:center;width:100px") }}
+				<br />
+				{{ form.overdueMoreInDays(class="btn btn-info form-control", style="width:100px") }}
+				{{ form.pastDueNumber(class="btn btn-info form-control", style="width:100px") }}
+			</div>
+			<div class="form-group">
+				{{ form.maxOverdueDay.label(class ="control-label", style="text-align:center;width:100px") }}
+				{{ form.wasteNum.label(class ="control-label", style="text-align:center;width:100px") }}
+				<br />
+				{{ form.maxOverdueDay(class="btn btn-info form-control", style="width:100px") }}
+				{{ form.wasteNum(class="btn btn-info form-control", style="width:100px") }}
+				<br />
+				{{ form.pastDueDay.label(class ="control-label", style="text-align:center;width:100px") }}
+				<br />
+				{{ form.pastDueDay(class="btn btn-info form-control", style="width:100px") }}
+				{{ form.submit_query(class="btn btn-info form-control", style="width:50px;font-weight:900;background:#0099CC") }}
+				{{ form.submit_transfer_more(class="btn btn-info form-control", style="width:50px;font-weight:900;background:#0099CC") }}
+			</div>
+		</div>
+		<br />
+		<div>
+			<table id="debt-table" class="table table-condensed table-striped table-bordered table-hover" style="font-size:14px">
+				<caption style="text-align:center"><strong>债权列表（总计：{{ count if count is not none else 0 }} 个）</strong></caption>
+				<thead>
+					<tr class="success">
+						<th style="text-align:center">编号</th>
+						<th style="text-align:center">原/现级</th>
+						<th style="text-align:center">进度</th>
+						<th style="text-align:center">近还</th>
+						<th style="text-align:center">曾逾(期)</th>
+						<th style="text-align:center">极逾</th>
+						<th style="text-align:center">余还</th>
+						<th style="text-align:center">极逾(总)</th>
+						<th style="text-align:center">近逾(长)</th>
+						<th style="text-align:center">流标</th>
+						<th style="text-align:center">还债比</th>
+						<th style="text-align:center">首更距今</th>
+						<th style="text-align:center">操作</th>
+						<th style="text-align:center"><input type="checkbox" id="allCheck", style="width:15px;height:15px"</input></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for debt in debt_list %}
+					<tr>
+						<td style="text-align:center"><a class=url href="https://invest.ppdai.com/loan/info/{{ debt.listingId }}" target=_blank>{{ debt.listingId }}</a></td>
+
+						{% if debt.currentCreditCode in ['E', 'F', 'G'] %}
+						<td style="text-align:center;background:#FF6633">
+						{% else %}
+						<td style="text-align:center">
+						{% endif %}
+						{{ debt.creditCode }}/{{ debt.currentCreditCode }}</td>
+
+						<td style="text-align:center">{{ debt.owingNumber }}/{{ debt.number }}</td>
+						<td style="text-align:center">{{ debt.leftRepayDay }}</td>
+						<td style="text-align:center">{{ debt.pastDueNumber }}/{{ debt.pastDueNumberNew }}</td>
+						<td style="text-align:center">{{ debt.pastDueDay }}/{{ debt.pastDueDayNew }}</td>
+
+						{% if debt.repaidOther == 1 %}
+						<td style="text-align:center;background:#FF6633">
+						{% elif debt.repaidOther == 2 %}
+						<td style="text-align:center;background:#3CB371">
+						{% else %}
+						<td style="text-align:center">
+						{% endif %}
+						{{ ['无', '未还', '已还'][debt.repaidOther] }}</td>
+
+						{% if debt.maxOverdueDay >= 7 %}
+						<td style="text-align:center;background:#FF6633">
+						{% else %}
+						<td style="text-align:center">
+						{% endif %}
+						{{ debt.maxOverdueDay }}</td>
+
+						{% if debt.overdueMoreInDays >= 7 %}
+						<td style="text-align:center;background:#FF6633">
+						{% else %}
+						<td style="text-align:center">
+						{% endif %}
+						{{ debt.overdueMoreInDays }}</td>
+
+						{% if debt.wasteNumNew >= 5 %}
+						<td style="text-align:center;background:#FF6633">
+						{% else %}
+						<td style="text-align:center">
+						{% endif %}
+						{{ debt.wasteNum }}/{{ debt.wasteNumNew }}</td>
+
+						{% if debt.owingAmount / debt.debtAmountMax >= 0.9 %}
+						<td style="text-align:center;background:#FF6633">
+						{% else %}
+						<td style="text-align:center">
+						{% endif %}
+						{{ '%.2f' % ((debt.owingAmount / debt.debtAmountMax) * 100) }}%</td>
+
+						<td style="text-align:center">{{ (debt.debtUpdateTimeNew - debt.debtUpdateTime).days }}</td>
+						<td style="text-align:center"><a href="/account/transfer?listingId={{ debt.listingId }}" target="_blank">转让</a></td>
+						<td	class='debt_list' style="text-align:center">{{ form.lists_listingId(class="btn btn-info form-control", style="width:15px;height:15px", value=debt.listingId) }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			<div class="pagination-wrap">
+				<ul class="pagination">
+				{% set current_page = offset//limit + (1 if offset%limit else 0) %}
+				{% set total_page = count//limit + (1 if count%limit else 0) %}
+				<li {{ 'class=disabled' if current_page - 1 <= 0 }}>
+					<a id={{ current_page-1 }} href="javascript:void(0)">&laquo;</a>
+				</li>
+				{% set ns = namespace(prev=0) %}	<!-- 必须采用命名空间才能保证变量在循环中能被重新赋值 -->
+				{% for i in range(0, total_page) %}
+				{% if -2 < i-0 < 2 or -3< i-total_page < 3 or -2 < i-current_page < 5 %}
+					{% set ns.prev = i %}
+					<li class="{% if i == current_page %}active{% endif %}">
+					<a id={{ i }} href="javascript:void(0)">{{ i + 1 }}</a>
+					</li>
+				{% elif ns.prev == i-1 %}
+				<li class="disabled"><a>…</a></li>
+				{% endif %}
+				{% endfor %}
+				<li {{ 'class=disabled' if current_page + 1 >= total_page }}>
+					<a id={{ current_page+1 }} href="javascript:void(0)">&raquo;</a>
+				</li>
+				</ul>
+			</div>
+		</div>
+	</form>
+</body>
+<script>
+$(function(){$("#allCheck").click(function(){var a=$('td.debt_list input[type="checkbox"]');if($(this).prop("checked")){a.prop("checked",true)}else{a.prop("checked",false)}})});$(document).ready(function(){$("li[class!='disabled']").on("click",function(){$.post("/account/query-debt",{offset:$(this).children("a").attr("id"),count:{{ count }},kwargs_json:{{ kwargs_json }}},function(b,a){alert("数据: \n"+b)})})});
+</script>

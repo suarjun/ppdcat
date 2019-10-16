@@ -1,0 +1,25 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<div id='main' class='tableCell'>
+	<!-- {% if script_list %}
+		{% for jsfile_name in script_list %}
+		<script src="{{host}}/{{jsfile_name}}.js"></script>
+		{% endfor %}
+	{% endif %} -->
+	<div class="alert alert-danger fade in box boxshadow">
+		<button type="button" class="close" data-dismiss="alert">×</button>
+		注意：请不要在策略名中使用任何符号，以免在后续使用中出现不必要的麻烦；所有区间参数格式均为(最小值:最大值)，范例 --&gt; 100:999999；不设限参数，请留空！如已设置，现需放弃使用某个参数，则请将该参数设为 -999999 并提交修改，即可删除该参数！
+	</div>
+	{% if treeMapChart %}
+	<div style="text-align:center">
+		{{treeMapChart|safe}}
+	</div>
+	{% endif %}
+	<br />
+	<form action="/account/policy-self/{{ current_user.Name}}" method="post" target="nm_iframe">
+	{{ wtf.quick_form(form) }}
+	</form>
+	<iframe id="id_iframe" name="nm_iframe" style="display:none"></iframe>
+	<script>
+var iframe=document.getElementById("id_iframe");iframe.onload=function(){var a=iframe.contentDocument.body.innerHTML;var b=JSON.parse(a);for(k in b){b[k].forEach(function(c){$("#submit").before("<div class='alert alert-"+k+" fade in box boxshadow'><button type=button class=close data-dismiss=alert>×</button>"+c+"</div>")})}};
+	</script>
+</div>

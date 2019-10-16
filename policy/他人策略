@@ -1,0 +1,59 @@
+{
+    "无问西东": {
+        "info": {
+            "Amount": [5000.0, 25000.0],
+            "CreditCode": ["A", "B", "C"],
+            "CurrentRate": [20.0, 28.0],
+            "Months": [6.0, 12.0],
+            "Age": [20.0, 35.0],
+            "CertificateValidate": 1,
+            "SuccessCount": [2.0, 30.0],
+            "WasteCount": [0.0, 0.0],
+            "NormalCount": [5.0, 100.0],
+            "OverdueLessCount": [0.0, 1.0],
+            "OverdueMoreCount": [0.0, 0.0],
+            "NowLastTime": [33.0, 300.0],
+            "ScaleDebtHighest": [0.0, 1.0],
+            "ScaleTotalPaySuccessLoan": [3.0, 20.0]
+        },
+        "BidAmount": 71,
+        "State": 1
+    },
+    "B22": {
+        "info": {
+            "Amount": [100.0, 20000.0],
+            "CreditCode": ["B"],
+            "CurrentRate": [20.0, 24.0],
+            "Months": [6.0, 12.0],
+            "Gender": 0,
+            "Age": [20.0, 35.0],
+            "SuccessCount": [2.0, 20.0],
+            "WasteCount": [0.0, 0.0],
+            "NormalCount": [5.0, 100.0],
+            "OverdueLessCount": [0.0, 0.0],
+            "OverdueMoreCount": [0.0, 0.0],
+            "NowLastTime": [62.0, 300.0],
+            "ScaleDebtHighest": [0.0, 0.8],
+            "ScaleTotalPaySuccessLoan": [3.0, 20.0]
+        },
+        "BidAmount": 61,
+        "State": 0
+    },
+    "硕士": {
+        "info": {
+            "CurrentRate": [18.0, 26.0],
+            "Months": [6.0, 12.0],
+            "EducationDegree": ["硕士", "硕士研究生"],
+            "StudyStyle": ["普通", "普通全日制", "全日制", "研究生", "自学考试", "自考", "网络教育", "函授", "业余", "夜大学", "脱产", "开放教育"],
+            "CertificateValidate": 1,
+            "SuccessCount": [1.0, 30.0],
+            "WasteCount": [0.0, 1.0],
+            "NormalCount": [3.0, 100.0],
+            "OverdueMoreCount": [0.0, 0.0],
+            "NowLastTime": [32.0, 300.0],
+            "ScaleTotalPaySuccessLoan": [3.0, 20.0]
+        },
+        "BidAmount": 77,
+        "State": 0
+    }
+}

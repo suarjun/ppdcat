@@ -1,0 +1,339 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<!DOCTYPE html>
+{% extends 'form_base.html' %}
+
+{% block title %}首页-拍拍猫{% endblock %}
+
+{% block styles %}
+{{ super() }}
+	<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="https://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+	<link href="http://cn.inspinia.cn/html/inspiniacn/hplus/css/style.css?v=4.1.0" rel="stylesheet">
+	<link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block page_content %}
+	<div id="wrapper" class="textshadow">
+	<!--左侧导航开始-->
+		<nav class="navbar-default navbar-static-side" role="navigation">
+			<div class="nav-close"><i class="fa fa-times-circle"></i></div>
+			<div class="sidebar-collapse">
+			<ul class="nav" id="side-menu" style="display: block;">
+				<li class="nav-header">
+					<div class="dropdown profile-element">
+						<span><img alt="image" class="img-circle" src="{{ url_for('static', filename='ppdcat_jpg.jpg') }}"></span>
+						<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+							<span class="clear">
+							<span class="block m-t-xs"><strong class="font-bold">{{ current_user.Name }}</strong></span>
+							<span class="text-muted text-xs block">拍拍猫{{ "管理" if current_user.Name in admin_list else "用户" }}<b class="caret"></b></span>
+							</span>
+						</a>
+						<ul class="dropdown-menu animated fadeInRight m-t-xs">
+							<li><a href="#modify-pw" onclick="showAtRight('/account/modify-pw/{{ current_user.Name}}')">修改密码</a></li>
+							<li><a href="{{ url_for('account.logout') }}">退出登录</a></li>
+						</ul>
+					</div>
+					<div class="logo-element"><i class="fa fa-black-tie fa-fw"></i></div>
+				</li>
+				<li>
+					<a href="#">
+						<i class="fa fa-gg fa-fw"></i>
+						<span class="nav-label">投资中心</span>
+						<span class="fa arrow"></span>
+					</a>
+					<ul class="nav nav-second-level collapse box boxshadow textshadow">
+						<li><a href="#policy-manager" onclick="showAtRight('/account/policy-manager/{{ current_user.Name}}')"><i class="fa fa-steam fa-fw"></i><small>策略管理</small></a></li>
+						<li><a href="#policy-self" onclick="showAtRight('/account/policy-self/{{ current_user.Name}}')"><i class="fa fa-ge fa-fw"></i><small>策略自选</small></a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#">
+						<i class="fa fa-gg-circle fa-fw"></i>
+						<span class="nav-label">债权中心</span>
+						<span class="fa arrow"></span>
+					</a>
+					<ul class="nav nav-second-level collapse">
+						<li><a href="#debt-policy-manager" onclick="showAtRight('/account/debt-policy-manager/{{ current_user.Name}}')"><i class="fa fa-steam-square fa-fw"></i><small>债策管理</small></a></li>
+						<li><a href="#debt-policy-self" onclick="showAtRight('/account/debt-policy-self/{{ current_user.Name}}')"><i class="fa fa fa-first-order fa-fw"></i><small>债策自选</small></a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#">
+						<i class="fa fa-pie-chart fa-fw"></i>
+						<span class="nav-label">统计中心</span>
+						<span class="fa arrow"></span>
+					</a>
+					<ul class="nav nav-second-level collapse">
+						<li><a href="#bid-list" onclick="showAtRight('/account/bid-list/{{ current_user.Name}}')"><i class="fa fa-list fa-fw"></i><small>投标记录</small></a></li>
+						<li><a href="#debt-list" onclick="showAtRight('/account/debt-list/{{ current_user.Name}}')"><i class="fa fa-list-ul fa-fw"></i><small>受让记录</small></a></li>
+						<li><a href="#counter" onclick="showAtRight('/account/counter/{{ current_user.Name}}')"><i class="fa fa-file-text fa-fw"></i><small>运行报告</small></a></li>
+						<li><a href="#post-loan-management" onclick="showAtRight('/account/post-loan-management/{{ current_user.Name}}')"><i class="fa fa fa-heartbeat fa-fw"></i><small>贷后管理</small></a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#">
+						<i class="fa fa-user-secret fa-fw"></i>
+						<span class="nav-label">用户中心</span>
+						<span class="fa arrow"></span>
+					</a>
+					<ul class="nav nav-second-level collapse">
+						<li><a href="#user-info" onclick="showAtRight('/account/user-info/{{ current_user.Name}}')"><i class="fa fa-universal-access fa-fw"></i><small>账户信息</small></a></li>
+						<li><a href="#authorize" onclick="showAtRight('/account/authorize/{{ current_user.Name}}')"><i class="fa fa-user-circle fa-fw"></i><small>三方授权</small></a></li>
+						<li><a href="#http-authorize" onclick="showAtRight('/account/http-authorize/{{ current_user.Name}}')"><i class="fa fa-user-circle-o fa-fw"></i><small>模拟授权</small></a></li>
+						<li><a href="#modify-pw" onclick="showAtRight('/account/modify-pw/{{ current_user.Name}}')"><i class="fa fa-key fa-fw"></i><small>修改密码</small></a></li>
+						<li><a href="#cost-check" onclick="showAtRight('/account/cost-check/{{ current_user.Name}}')"><i class="fa fa-fort-awesome fa-fw"></i><small>费用审计</small></a></li>{% if current_user.Name in admin_list %}
+						<li><a href="#pay" onclick="showAtRight('/account/pay/{{ current_user.Name}}')"><i class="fa fa-university fa-fw"></i><small>充值提现</small></a></li>{% endif%}
+					</ul>
+				</li>
+				<li>
+					<a href="#">
+						<i class="fa fa-flag fa-fw"></i>
+						<span class="nav-label">软件中心</span>
+						<span class="fa arrow"></span>
+					</a>
+					<ul class="nav nav-second-level collapse">
+						<li><a href="#download" onclick="showAtRight('/account/download')"><i class="fa fa-download fa-fw"></i><small>软件下载</small></a></li>
+						<li><a href="#app-log" onclick="$('#content').html('<iframe align=&quot;center&quot; width=&quot;100%&quot; height=&quot;'+(document.documentElement.clientHeight-60)+'&quot; src=&quot;app-log&quot; frameborder=&quot;no&quot; border=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;auto&quot; seamless></iframe>')"><i class="fa fa-pencil fa-fw"></i><small>更新日志</small></a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#">
+						<i class="fa fa-exclamation-circle fa-fw"></i>
+						<span class="nav-label">信息中心</span>
+						<span class="fa arrow"></span>
+					</a>
+					<ul class="nav nav-second-level collapse">
+						<li><a id="switchCSS" href="#"><i class="fa fa-object-ungroup fa-fw"></i><small>阴影开关</small></a></li>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://u.ifeige.cn/wechat/share-qrcode/xxsu" width="100px" height="100px" title="扫一扫，添加状态提醒">
+						<br />
+						<strong style="text-align:center;vertical-align:middle">
+							<font color='#008080'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;微信推送状态提醒</font>
+						</strong>
+					</ul>
+				</li>
+			</ul>
+			</div>
+		</nav>
+
+	<!--右侧部分开始-->
+	<div id="page-wrapper" class="gray-bg dashbard-1">
+		<div class="row border-bottom">
+			<nav class="navbar navbar-static-top" role="navigation" style="margin-bottom:0">
+				<ul class="nav navbar-top-links navbar-left">
+					<a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+				</ul>
+
+				<ul class="nav navbar-top-links navbar-right">
+					<li><span class="m-r-sm text-muted welcome-message"><i class="fa fa-spinner fa-pulse fa-lg"></i> 欢迎使用拍拍猫！当前版本:v2.1.3</span></li>
+					<li class="hidden-xs"><a href="/"><i class="fa fa-home"></i> 首页</a></li>
+					<li class="hidden-xs"><a href="{{ url_for('account.logout') }}"><i class="fa fa-sign-out"></i> 退出</a></li>
+					<li class="dropdown hidden-xs"><a class="right-sidebar-toggle" aria-expanded="false"><i class="fa fa-tasks"></i> 通知 <span class="badge">2</span></a></li>
+				</ul>
+			</nav>
+		</div>
+		<div id="content">
+			<div id="row">
+				<div class="col-md-6">
+					<div class="ibox float-e-margins box boxshadow textshadow">
+						<div class="ibox-title"><h5>最新信息</h5></div>
+						<div class="ibox-content no-padding">
+							<div class="panel-body">
+								<div class="panel-group" id="version">
+									<div class="panel panel-primary">
+										<div class="panel-heading"><i class="fa fa-info-circle"></i> 最新统计</div>
+										<div class="panel-body" style='text-align:center;font-size:16px;color:#99CCCC'>
+											<div class="col-sm-6">
+												<h5>昨日投标</h5>
+												<h1 class="no-margins" style='color:#007979'>{{ total_bid }}</h1>
+											</div>
+											<div class="col-sm-6">
+												<h5>昨日投资</h5>
+												<h1 class="no-margins" style='color:#007979'>{{ total_participation_amount}}</h1>
+											</div>
+										</div>
+									</div>
+									<div class="panel panel-success">
+										<div class="panel-heading"><i class="fa fa-clock-o"></i> 最新计划</div>
+										<div class="panel-body">
+											<p><font color='#B8860B'>统计数据 - 所有用户策略排行；<br>系统功能 - 评估是否整合贷后管理工具，评估通过则以云服务代替单机工具；<br>股票量化 - 股票量化投资工具项目调研。</font></p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="ibox float-e-margins box boxshadow textshadow">
+						<div class="ibox-title">
+							<h5>更新日志</h5>
+						</div>
+						<div class="ibox-content no-padding">
+							<div class="panel-body">
+								<div class="panel-group" id="version">
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h5 class="panel-title"><a data-toggle="collapse" data-parent="#version" href="#log-1"><i class="fa fa-font-awesome"></i> v2.0.0</a><span class="label label-primary pull-right">七月</span></h5>
+										</div>
+										<div id="log-1" class="panel-collapse collapse in">
+											<div class="panel-body">
+												<div class="alert alert-warning">改版后版本，网站页面主体结构改版，布局更合理，页面更美观。</div>
+												<ol>
+													<li>2019.08.01：网站首页 - 优化“最新统计”展示方式。</li>
+													<li>2019.07.31：网站首页 - 新增“最新统计”，用于展示昨日投资信息，去除“账户信息”，并于“用户中心”设置二级菜单作为访问新入口；运行报告 - 新增“平均期限”、“平均利率”，展示回溯月具体日期。</li>
+													<li>2019.07.26：网站程序 - 为加速访问，部分页面额外增加缓存机制。</li>
+													<a href="javascript:void(0)" onclick="$('#content').html('<iframe align=&quot;center&quot; width=&quot;100%&quot; height=&quot;'+(document.documentElement.clientHeight-60)+'&quot; src=&quot;app-log&quot; frameborder=&quot;no&quot; border=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;auto&quot; seamless></iframe>')" role="button" class="btn btn-primary btn-xs">查看更多</a>
+												</ol>
+											</div>
+										</div>
+									</div>
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h5 class="panel-title"><a data-toggle="collapse" data-parent="#version" href="#log-2"><i class="fa fa-font-awesome"></i> v1.0.0</a><span class="label label-success pull-right">六月</span></h5>
+										</div>
+										<div id="log-2" class="panel-collapse collapse">
+											<div class="panel-body">
+												<div class="alert alert-warning">改版前版本，简洁、高效。</div>
+												<ol>
+													<li>2019.06.28：贷后管理 - “单标转让”修复调整转让利率，却按照原始利率出售债权的错误。</li>
+													<li>2019.06.24：网站程序 - 进一步对“重复新建事件循环导致报错”错误进行修复；统计数据 - 完善“获取逾期”流程。</li>
+													<li>2019.06.21：网站程序 - 修复全面启用异步协程带来的，多处同时对外请求时，由于重复新建事件循环导致报错的错误；贷后管理 - -修复“更新债权”未将获取标详情中的统计数据时的报错信息，纳入警报展示的错误。</li>
+													<a href="javascript:void(0)" onclick="$('#content').html('<iframe align=&quot;center&quot; width=&quot;100%&quot; height=&quot;'+(document.documentElement.clientHeight-60)+'&quot; src=&quot;app-log&quot; frameborder=&quot;no&quot; border=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;auto&quot; seamless></iframe>')" role="button" class="btn btn-primary btn-xs">查看更多</a>
+												</ol>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+		</div>
+		</div>
+	</div>
+	<!--右侧部分结束-->
+	<!--右侧边栏开始-->
+	<div id="right-sidebar">
+		<div class="sidebar-container">
+			<ul class="nav nav-tabs navs-2">
+				<li class="active"><a data-toggle="tab" href="#tab-1">通知</a></li>
+				<li><a data-toggle="tab" href="#tab-2">项目进度</a></li>
+			</ul>
+
+			<div class="tab-content">
+				<div id="tab-1" class="tab-pane active">
+					<div class="sidebar-title">
+						<h3> <i class="fa fa-comments-o"></i> 最新通知</h3>
+						<small><i class="fa fa-tim"></i> 您当前有 2 条未读信息</small>
+					</div>
+					<div>
+						<div class="sidebar-message">
+							<a href="#">
+								<div class="pull-left text-center">
+									<img alt="image" class="img-circle message-avatar" src="{{ url_for('static', filename='ppdcat_jpg.jpg') }}">
+									<div class="m-t-xs">
+										<i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i>
+									</div>
+								</div>
+								<div class="media-body">
+									部分页面额外增加缓存机制。
+									<br>
+									<small class="text-muted">2019.7.26 11:45</small>
+								</div>
+							</a>
+						</div>
+						<div class="sidebar-message">
+							<a href="#">
+								<div class="pull-left text-center">
+									<img alt="image" class="img-circle message-avatar" src="{{ url_for('static', filename='ppdcat_jpg.jpg') }}">
+									<div class="m-t-xs">
+										<i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i>
+									</div>
+								</div>
+								<div class="media-body">
+									自助逾期数据查询改为月度报告，其中月为回溯月，非自然月。
+									<br>
+									<small class="text-muted">2019.7.25 23:26</small>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<div id="tab-2" class="tab-pane">
+					<div class="sidebar-title">
+						<h3> <i class="fa fa-cube"></i> 最新任务</h3>
+						<small><i class="fa fa-tim"></i> 系统当前有2个任务，0个已完成</small>
+					</div>
+					<ul class="sidebar-list">
+						<li>
+							<a href="#">
+								<span class="label label-primary pull-right">最新</span>
+								<h4>立项阶段</h4>
+								股票量化交易工具
+								<div class="small">已完成： 1%</div>
+								<div class="progress progress-mini"><div style="width: 1%;" class="progress-bar progress-bar-info"></div></div>
+								<div class="small text-muted m-t-xs">项目截止： 2019-07-01 - </div>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<div class="small pull-right m-t-xs">10天以后</div>
+								<h4>开发阶段</h4>
+								贷后管理工具
+								<div class="small">已完成： 75%</div>
+								<div class="progress progress-mini"><div style="width: 75%;" class="progress-bar"></div></div>
+								<div class="small text-muted m-t-xs">项目截止： 2019-04-23 - </div>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--右侧边栏结束-->
+	</div>
+{% endblock %}
+{% block scripts %}
+	{{ super() }}
+	<!-- 全局js -->
+	<script src="https://cdn.bootcss.com/metisMenu/1.1.3/metisMenu.min.js" defer="defer"></script>
+	<script src="https://cdn.bootcss.com/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js" defer="defer"></script>
+	<script src="https://cdn.bootcss.com/layer/2.3/layer.js" defer="defer"></script>
+
+	<!-- 自定义js -->
+	<script src="http://cn.inspinia.cn/html/inspiniacn/hplus/js/hplus.js?v=4.1.0" defer="defer"></script>
+
+	<!-- 第三方插件 -->
+	<script src="https://cdn.bootcss.com/pace/1.0.2/pace.min.js" defer="defer"></script>
+	<script src="https://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js" defer="defer"></script>
+	<script type="text/javascript" defer="defer">
+var shadowCSS = $("#shadowCSS");var switchCSS = $("#switchCSS");var i = 0;shadowCSS.text('');
+function showAtRight(a){$.ajax({type:"GET",url:a,dataType:"html",success:function(b){$("#content").html(b);$("#page-wrapper").css("min-height",$("#content").height()+62)},error:function(){$("#content").html("获取数据失败！")}})};
+switchCSS.click(function(){
+if (i == 0) {shadowCSS.text('.box {border: 0px ridge silver}.boxshadow {box-shadow: 4px 4px 6px 1px gray}.textshadow {text-shadow: 3px 3px 10px');i=1}
+else {shadowCSS.text('');i=0}
+});
+$(document).ready(function () {
+	setTimeout(function () {
+		toastr.options = {
+		  "closeButton": true,
+		  "debug": false,
+		  "progressBar": true,
+		  "preventDuplicates": false,
+		  "positionClass": "toast-top-right",
+		  "onclick": null,
+		  "showDuration": "400",
+		  "hideDuration": "1000",
+		  "timeOut": "7000",
+		  "extendedTimeOut": "1000",
+		  "showEasing": "swing",
+		  "hideEasing": "linear",
+		  "showMethod": "slideDown",
+		  "hideMethod": "fadeOut"
+		};
+		toastr.success("欢迎来到拍拍猫！", "{{ current_user.Name }} 你好！")
+	}, 1300);
+	$.getScript("https://cdn.bootcss.com/echarts/4.2.1/echarts.min.js")})
+	</script>
+{% endblock %}

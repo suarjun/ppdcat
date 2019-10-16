@@ -1,0 +1,30 @@
+{% extends "form_base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}注册{% endblock %}
+{% block styles %}
+{{ super() }}
+	<link rel="stylesheet" href="https://cdn.bootcss.com/reveal.js/3.8.0/css/theme/sky.min.css" id="theme">
+{% endblock %}
+{% block page_content %}
+{% for field, errors in form.errors.items() %}
+<div class="alert alert-error fade in box boxshadow textshadow" style="background:#FF6633;text-align:center">
+	{{ form[field].label }}: {{ ', '.join(errors) }}
+</div>
+{% endfor %}
+<div class="page-header">
+	<h1 class="textshadow" style="text-align:center">注册</h1>
+</div>
+<form action="/account/register" method="post" style="text-align:center">
+	{{ form.hidden_tag() }}
+	{{ form.name.label(class="textshadow", style="width:100%") }}
+	{{ form.name(class="btn btn-info box boxshadow textshadow", style="text-align:center;width:20%") }}<br /><br />
+	{{ form.password.label(class="textshadow", style="width:100%") }}
+	{{ form.password(class="btn btn-info box boxshadow textshadow", style="text-align:center;width:20%") }}<br /><br />
+	{{ form.confirm.label(class="textshadow", style="width:100%") }}
+	{{ form.confirm(class="btn btn-info box boxshadow textshadow", style="text-align:center;width:20%") }}<br /><br />
+	{{ form.submit(class="btn btn-info box boxshadow textshadow", style="width:100px;font-weight:900;background:#0099CC") }}<br /><br />
+	<p class="text-muted text-center"><small>已经有一个帐户?</small></p>
+	<a class="btn btn-success box boxshadow textshadow" href="{{ url_for('account.login') }}">已注册账户登录</a><br /><br />
+	<p class="text-muted text-center"> <small>Copyright 拍拍猫 © 2018-2019</small> </p>
+</form>
+{% endblock %}

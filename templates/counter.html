@@ -1,0 +1,64 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<div class="tabbable tabs-left">
+
+<ul class="nav nav-tabs">
+	{% for i, (policy_name, policy_count) in enumerate(count_list) %}
+	<li {% if i == 0 %}class="active"{% endif %}><a href="#{{ policy_name.replace('+','加') }}" data-toggle="tab">{{ policy_name }}</a></li>
+	{% endfor %}
+</ul>
+
+<div class="tab-content">
+	{% for i, (policy_name, policy_count) in enumerate(count_list) %}
+	<div {% if i == 0 %}class="tab-pane fade in active"{% else %}class="tab-pane fade"{% endif %} id="{{ policy_name.replace('+','加') }}">
+	<table class="table table-condensed table-striped table-bordered table-hover box boxshadow active" style="font-size:13px">
+		<thead>
+			<tr class="danger">
+				<th style="text-align:center">回溯(月)</th>
+				<th style="text-align:center">平均期限</th>
+				<th style="text-align:center">平均利率</th>
+				<th style="text-align:center">1~10天</th>
+				<th style="text-align:center">11~30天</th>
+				<th style="text-align:center">31~60天</th>
+				<th style="text-align:center">61~90天</th>
+				<th style="text-align:center">90天以上</th>
+				<th style="text-align:center">30天以上</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for back, (start_date, end_date, months_Average, rate_Average), count_info in policy_count %}
+			<tr id="list">
+				<td style="text-align:center">{{ back }} | {{ start_date }} ~ {{ end_date }}</td>
+				<td style="text-align:center">{{ months_Average }}</td>
+				<td style="text-align:center">{{ rate_Average }}</td>
+				{% set ns = namespace(black_total=0, all_total=0) %}
+				{% for i, (count_black, count_all, overdue_rate) in enumerate(count_info) %}
+				{% if overdue_rate %}
+				<td style="text-align:center;background:#FF6633">
+				{% else %}
+				<td style="text-align:center">
+				{% endif %}{{ count_black }}/{{ count_all }} | {{ overdue_rate }}%</td>
+				{% if i > 2 %}
+				{% set ns.black_total = ns.black_total + count_black %}
+				{% elif i == 2 %}
+				{% set ns.black_total = ns.black_total + count_black %}
+				{% set ns.all_total = count_all %}
+				{% endif %}
+				{% endfor %}
+				{% if ns.all_total %}
+				{% set ns.overdue_rate_total = round((ns.black_total / ns.all_total) * 100, 3) %}
+				{% else %}
+				{% set ns.overdue_rate_total = 0 %}
+				{% endif %}
+				{% if ns.overdue_rate_total %}
+				<td style="text-align:center;background:#FF6633">
+				{% else %}
+				<td style="text-align:center">
+				{% endif %}{{ ns.black_total }}/{{ ns.all_total }} | {{ ns.overdue_rate_total }}%</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	</div>
+	{% endfor %}
+</div>
+</div>

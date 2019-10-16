@@ -1,0 +1,17 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<div id="main" style="text-align:center">
+	<br />
+	<form action="/account/pay/{{ current_user.Name}}" method="post" target="nm_iframe">
+		{{ form.hidden_tag() }}
+		{{ form.name(class="btn btn-info box boxshadow textshadow", style="width:100px") }}
+		{{ form.pay_amount(class="btn btn-info box boxshadow textshadow", style="width:100px") }}
+		{{ form.authorize_binding(class="btn btn-info box boxshadow textshadow", style="width:100px") }}
+		{{ form.submit_pay(class="btn btn-warning box boxshadow textshadow", style="width:100px;font-weight:900", onclick="return confirm('是否充值？')") }}
+		{{ form.submit_verify_true(class="btn btn-primary box boxshadow textshadow", style="width:100px;font-weight:900", onclick="return confirm('是否授权？')") }}
+		{{ form.submit_verify_false(class="btn btn-danger box boxshadow textshadow", style="width:100px;font-weight:900", onclick="return confirm('是否停权？')") }}
+	</form>
+</div>
+<iframe id="id_iframe" name="nm_iframe" style="display:none"></iframe>
+<script>
+var iframe=document.getElementById("id_iframe");iframe.onload=function(){var a=iframe.contentDocument.body.innerHTML;var b=JSON.parse(a);for(k in b){b[k].forEach(function(c){$("#main").prepend("<div class='alert alert-"+k+" fade in box boxshadow'><button type=button class=close data-dismiss=alert>×</button>"+c+"</div>")})}window.setTimeout(function(){$('[data-dismiss="alert"]').alert("close")},5000)};
+</script>

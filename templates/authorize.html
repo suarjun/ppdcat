@@ -1,0 +1,45 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<div style="text-align:center">
+	<div class="alert alert-danger fade in box boxshadow"><button type="button" class="close" data-dismiss="alert">×</button>注意：目前授权数量最多为五个，如有更多需求，请联系管理员。</div>
+	<br />
+	<form action="/account/authorize/{{ current_user.Name}}" method="post" target="nm_iframe">
+		{{ form.hidden_tag() }}
+		{{ form.authorize_binding(class="btn btn-info box boxshadow textshadow", style="width:100px;height:34px") }}
+		{{ form.authorize_name(class="btn btn-info box boxshadow textshadow", style="width:100px") }}
+		{{ form.submit_new(class="btn btn-primary box boxshadow textshadow", style="width:100px;font-weight:900") }}
+		{{ form.submit_auth(class="btn btn-primary box boxshadow textshadow", style="width:100px;font-weight:900", onclick="setTimeout(function(){window.open('https://ac.ppdai.com/oauth2/login?AppID=6aeed0c3774a473f936f128bddd97367&ReturnUrl=http://www.ppdcat.top','_blank')},1000)") }}
+		{{ form.submit_del(class="btn btn-danger box boxshadow textshadow", style="width:100px;font-weight:900", onclick="return confirm('是否删除授权？')") }}
+		{{ form.submit_balance(class="btn btn-primary box boxshadow textshadow", style="width:100px;font-weight:900") }}
+		{{ form.submit_bid(class="btn btn-warning box boxshadow textshadow", style="width:100px;font-weight:900", onclick="return confirm('是否关闭投标？')") }}
+		{{ form.submit_debt(class="btn btn-warning box boxshadow textshadow", style="width:100px;font-weight:900", onclick="return confirm('是否关闭购债？')") }}
+	</form>
+	<br />
+	<div class="table-responsive">
+	<table class="table table-condensed table-striped table-bordered table-hover box boxshadow" style="font-size:14px">
+		<thead>
+			<tr class="info">
+				<th style="text-align:center">授权名称</th>
+				<th style="text-align:center">三方授权</th>
+				<th style="text-align:center">账户余额</th>
+				<th style="text-align:center">账户名称</th>
+				<th style="text-align:center">增值服务</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for name, info in authorize_binding_dict.items() %}
+			<tr>
+				<td style="text-align:center">{{ name }}</td>
+				<td style="text-align:center">{{ ["无效", "有效"][info["Authorized"]] }}</td>
+				<td style="text-align:center" id={{ name }} class="balance">{{ info["Balance"] }}</td>
+				<td style="text-align:center" id={{ name }} class="PPDUN">{{ info['PPDUN'] }}</td>
+				<td style="text-align:center">{{ ["无", "有"][info["Verify"]] }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	</div>
+</div>
+<iframe id="id_iframe" name="nm_iframe" style="display:none"></iframe>
+<script>
+var iframe=document.getElementById("id_iframe");iframe.onload=function(){var a=iframe.contentDocument.body.innerHTML;var b=JSON.parse(a);for(k in b){if(k!="content"){b[k].forEach(function(c){$("form").before("<div class='alert alert-"+k+" fade in box boxshadow'><button type=button class=close data-dismiss=alert>×</button>"+c+"</div>")})}else{b[k].forEach(function(c){$("[id="+c["id"]+"]").filter(".state").text(c["state"]);$("[id="+c["id"]+"]").filter(".balance").text(c["balance"])})}}window.setTimeout(function(){$('[data-dismiss="alert"]').alert("close")},5000)};
+</script>

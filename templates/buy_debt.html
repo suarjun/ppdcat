@@ -1,0 +1,31 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<body>
+	<div>
+		{% for field, errors in form.errors.items() %}
+		<div class="alert alert-error" style="width:600px;background:#FF6633">
+			{{ form[field].label }}: {{ ', '.join(errors) }}
+		</div>
+		{% endfor %}
+		{% for field, errors in form.errors.items() %}
+			<div class="alert alert-error" style="width:600px;background:#FF6633">
+				{{ form[field].label }}: {{ ', '.join(errors) }}
+			</div>
+		{% endfor %}
+		<form action="/account/buy-debt/{{ current_user.Name}}" method="post">
+			{{ form.hidden_tag() }}
+			<div class="form-group">
+				{{ form.request_interval_market.label(style="text-align:center;width:100px") }}
+				{{ form.request_interval_api.label(style="text-align:center;width:100px") }}
+				{{ form.waiting_time_for_rerty.label(style="text-align:center;width:100px") }}
+				{{ form.rate.label(style="text-align:center;width:100px") }}
+				<br />
+				{{ form.request_interval_market(class="btn btn-info", style="width:100px") }}
+				{{ form.request_interval_api(class="btn btn-info", style="width:100px") }}
+				{{ form.waiting_time_for_rerty(class="btn btn-info", style="width:100px") }}
+				{{ form.rate(class="btn btn-info", style="width:100px") }}
+				{{ form.submit_refresh(class="btn btn-info", style="width:100px;font-weight:900;background:#0099CC") }}
+				{{ form.submit_exit(class="btn btn-info", style="width:100px;font-weight:900;background:#0099CC") }}
+			</div>
+		</form>
+	</div>
+</body>

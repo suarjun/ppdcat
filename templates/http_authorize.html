@@ -1,0 +1,49 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<div style="text-align:center">
+	<div class="alert alert-danger fade in box boxshadow">
+		<button type="button" class="close" data-dismiss="alert">×</button>
+		注意：首次使用模拟授权前，请先填入拍拍贷账户密码并选择一个授权位绑定，以后仅需提交验证码即可获取令牌。模拟授权目前仅用于增值服务的用户验证，故无需定期提交验证码以更新令牌。您还可以选择直接填入拍拍贷的用户名，并绑定授权位，来代替此操作。本站每月提供一次修改绑定机会。
+	</div>
+	<br />
+	<form role="form" class ="form-inline" action="/account/http-authorize/{{ current_user.Name}}" method="post" target="nm_iframe">
+		{{ form.hidden_tag() }}
+		{{ form.authorize_binding(class="btn btn-info box boxshadow textshadow", style="width:100px;height:34px") }}
+		{{ form.PPDID(class="btn btn-info box boxshadow textshadow", style="width:100px") }}
+		{{ form.PPDPW(class="btn btn-info box boxshadow textshadow", style="width:100px") }}
+		{{ form.PPDUN(class="btn btn-info box boxshadow textshadow", style="width:100px") }}
+		{{ form.ValidateCode(class="btn btn-info box boxshadow textshadow", onfocus="this.style='width:100px;'", onblur="this.style='width:100px;background-image:url(data:image/gif;base64,%s)'" % img_b64_string, style="width:100px;background-image:url(data:image/gif;base64,%s)" % img_b64_string) }}
+		{{ form.submit_commit(class="btn btn-primary box boxshadow textshadow", style="width:100px;font-weight:900") }}
+		{{ form.submit_save(class="btn btn-success box boxshadow textshadow", style="width:100px;font-weight:900") }}
+	</form>
+	<br />
+	<div class="table-responsive">
+	<table class="table table-condensed table-striped table-bordered table-hover box boxshadow" style="font-size:14px">
+		<thead>
+			<tr class="info">
+				<th style="text-align:center">授权名称</th>
+				<th style="text-align:center">拍拍贷账户</th>
+				<th style="text-align:center">拍拍贷用户</th>
+				<th style="text-align:center">模拟授权</th>
+				<th style="text-align:center">增值服务</th>
+				
+				
+			</tr>
+		</thead>
+		<tbody>
+			{% for name, info in authorize_binding_dict.items() %}
+			<tr>
+				<td style="text-align:center">{{ name }}</td>
+				<td style="text-align:center" id={{ name }} class="PPDID">{{ info['PPDID'] }}</td>
+				<td style="text-align:center" id={{ name }} class="PPDUN">{{ info['PPDUN'] }}</td>
+				<td style="text-align:center" id={{ name }} class="state">{{ ["无效", "有效"][info["CookiesEnable"]] }}</td>
+				<td style="text-align:center">{{ ["无", "有"][info["Verify"]] }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	</div>
+</div>
+<iframe id="id_iframe" name="nm_iframe" style="display:none"></iframe>
+<script>
+var iframe=document.getElementById("id_iframe");iframe.onload=function(){var a=iframe.contentDocument.body.innerHTML;var b=JSON.parse(a);for(k in b){if(k!="policy"){b[k].forEach(function(c){$("form").before("<div class='alert alert-"+k+" fade in box boxshadow'><button type=button class=close data-dismiss=alert>×</button>"+c+"</div>")})}else{element=b[k]["id"].replace(/\./g,"\\.");$("[id="+element+"]").filter(".state").text(b[k]["state"]);$("[id="+element+"]").filter(".PPDID").text(b[k]["PPDID"]);$("[id="+element+"]").filter(".PPDUN").text(b[k]["PPDUN"])}}window.setTimeout(function(){$('[data-dismiss="alert"]').alert("close")},5000)};
+</script>

@@ -1,0 +1,49 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<head>
+	<title>逾期统计-拍拍猫</title>
+	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://cdn.bootcss.com/echarts/4.2.1/echarts.min.js"></script>
+	<style>.box {border: 0px ridge silver}.boxshadow {box-shadow: 4px 4px 6px 1px gray}.textshadow {text-shadow: 5px 5px 10px}</style>
+</head>
+<div class="textshadow" style="text-align:center">
+	<div class="alert alert-warning fade in box boxshadow">
+		<button type="button" class="close" data-dismiss="alert">×</button>
+		为保证投标效率，节省服务器资源，逾期数据更新为手动慢速获取模式，若要获取最新逾期数据，请点击“获取逾期”按钮，系统将会为您更新逾期数据。您可以留在本页面等待更新完成，完成后页面将会提示，也可选择一段时间后再来查询，具体用时与您在本服务器所投标数量直接相关。另外，一天内请勿重复获取，服务器已设置为每天仅允许执行一次获取逾期操作。
+	</div>
+	<form role="form" class ="form-inline" action="/account/counter/{{ current_user.Name}}" method="post">
+		{{ form.hidden_tag() }}
+		<div class="form-group" style="height:107px">
+			{{ form.policy.label(class ="control-label", style="text-align:center;width:100px") }}
+			<br />
+			{{ form.policy(class="btn btn-info box boxshadow textshadow", style="width:100px;height:84px") }}
+		</div>
+		<div class="form-group" style="height:107px">
+			{{ form.start_end.label(class ="control-label", style="text-align:center;width:100px") }}
+			<br />
+			{{ form.start_end(class="btn btn-info box boxshadow textshadow", style="width:100px;height:84px") }}
+		</div>
+		<div class="form-group" style="height:107px">
+			{{ form.end_now.label(class ="control-label", style="text-align:center;width:100px") }}
+			<br />
+			{{ form.end_now(class="btn btn-info box boxshadow textshadow", style="width:100px;height:84px") }}
+		</div>
+		<div class="form-group">
+			{{ form.submit_query.label(class ="control-label", style="visibility:hidden;text-align:center;width:100px") }}
+			<br />
+			{{ form.submit_query(class="btn btn-info box boxshadow textshadow", style="width:100px;font-weight:900;background:#0099CC") }}
+			<br />
+			{{ form.submit_get.label(class ="control-label", style="visibility:hidden;text-align:center;width:100px") }}
+			<br />
+			<input class="btn btn-info box boxshadow textshadow" id="over_due_months" name="over_due_months" style="width:100px;font-weight:900;background:#0099CC" type="submit" value="月度数据" readOnly=true onclick="window.open('http://www.ppdcat.top','_blank')">
+			<!-- {{ form.submit_get(class="btn btn-info box boxshadow textshadow", style="width:100px;font-weight:900;background:#0099CC") }} -->
+			<br />
+		</div>
+	</form>
+	<br />
+	{% if grid %}
+	{{grid|safe}}
+	{% endif %}
+</div>

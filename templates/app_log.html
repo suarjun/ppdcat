@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="cn">
+
+<head>
+<title>历史日志</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://cdn.bootcss.com/reveal.js/3.8.0/css/reset.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/reveal.js/3.8.0/css/reveal.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.bootcss.com/reveal.js/3.8.0/css/theme/sky.min.css" id="theme">
+<link href="https://cdn.bootcss.com/reveal.js/3.8.0/lib/css/monokai.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="reveal">
+	<div class="slides">
+		<section><section><h2>历史日志</h2><p>请向下或向右翻页浏览日志，按 O 键进入概览，再按一次则退出概览</p></section></section>
+
+		<section>
+			<h3>2019年7月</h3>
+			<table style="font-size:19px">
+				<thead><tr><th>日期</th><th>内容</th></tr></thead>
+				<tbody>
+					<tr><td>2019.07.25</td><td>统计数据 - 全面改版为月度运行报告，其中月为回溯月，非自然月。</td></tr>
+					<tr><td>2019.07.24</td><td>统计数据 - 获取逾期方式由手动变更为自动。</td></tr>
+					<tr><td>2019.07.16</td><td>网站首页 - 异步加载 js 文件，导航菜单响应更迅速。</td></tr>
+					<tr><td>2019.07.12</td><td>三方授权 - 修复查询余额时，仅更新最后一个授权账户余额的错误。</td></tr>
+					<tr><td>2019.07.04</td><td>贷后管理 - 修复“更新债权”时，本该更新却变为插入数据的错误。</td></tr>
+					<tr><td>2019.07.01</td><td>版本迭代 - 网站页面主体结构改版。</td></tr>
+				</tbody>
+			</table>
+		</section>
+
+		<section data-background="#FF6633">
+			<h3>2019年6月</h3>
+			<table style="font-size:17px">
+				<thead><tr><th>日期</th><th>内容</th></tr></thead>
+				<tbody>
+					<tr><td>2019.06.28</td><td>贷后管理 - “单标转让”修复调整转让利率，却按照原始利率出售债权的错误。。</td></tr>
+					<tr><td>2019.06.24</td><td>网站程序 - 进一步对“重复新建事件循环导致报错”错误进行修复；统计数据 - 完善“获取逾期”流程。</td></tr>
+					<tr><td>2019.06.21</td><td>网站程序 - 修复全面启用异步协程带来的，多处同时对外请求时，由于重复新建事件循环导致报错的错误；贷后管理 - -修复“更新债权”未将获取标详情中的统计数据时的报错信息，纳入警报展示的错误。</td></tr>
+					<tr><td>2019.06.20</td><td>安全加固 - 贷后管理工具付费用户授权系统加固。</td></tr>
+					<tr><td>2019.06.19</td><td>策略自选 - 优化“策略参数展示”的展示速度；软件中心 - 新增“软件下载”子项；更新日志 - 展示方式由列表变更为幻灯片模式；贷后管理 - 修复“单标转让”出售时“确认转让”失败的错误。</td></tr>
+					<tr><td>2019.06.17</td><td>贷后管理 - “单标转让”去除债权编号输入框，改用自动从数据库获取债权编号的方式。</td></tr>
+					<tr><td>2019.06.16</td><td>贷后管理 - “查询债权”新增“原/现类型”字段，展示首次爬取时及当前债权还款状态，当债权从“未逾期”变为“已逾期”时，除逾期天数外的所有数据将被冻结不再更新，以便于后期提取逾期标特征；修改排序方式为按标号排序。</td></tr>
+					<tr><td>2019.06.13</td><td>版本迭代 - 网站全面启用协程实现异步机制；贷后管理 - 进度查询从 ajax 轮询改为服务器通过 WebSocket 推送方式 & 单标转让页面显示当前等级，新增债权编号输入框，以避免某些标出现“请重试”的错误 & 修复一键转让时只转让部分债权的错误 & 新版发布。</td></tr>
+					<tr><td>2019.06.12</td><td>安全加固 - 使用 md5 加密保存密码，放弃模拟授权，全面启用API授权绑定增值服务的授权方式。</td></tr>
+					<tr><td>2019.06.11</td><td>统计数据 - 修复因多账户系统上线而失效的获取逾期功能；贷后管理 - 基础版本基本完成，择日发布。</td></tr>
+					<tr><td>2019.06.10</td><td>投标程序 - 投标日期修改为投标时间。</td></tr>
+					<tr><td>2019.06.05</td><td>策略管理 - 新增批量修改自选策略利率功能；贷后管理 - 实现一键转让逾期标功能。</td></tr>
+					<tr><td>2019.06.03</td><td>贷后管理 - 实现单标转让功能，根据需要可组合查询信息；用户界面 - 增加阴影立体效果开关，并默认关闭阴影。</td></tr>
+				</tbody>
+			</table>
+		</section>
+
+		<section data-background="#4d7e65">
+			<h3>2019年5月</h3>
+			<table style="font-size:19px">
+				<thead><tr><th>日期</th><th>内容</th></tr></thead>
+				<tbody>
+					<tr><td>2019.05.31</td><td>贷后管理 - 加入密集借款及月高待还两个参数；三方授权 - 修复多授权账户查询余额时只获取到一个账户余额的错误；用户界面 - 字体美化及容器立体化，优化内容展示效果。</td></tr>
+					<tr><td>2019.05.30</td><td>安全加固 - 网站全面启用 CSRF 防御机制，页面打开后，如表单长时间未提交，由于 CSRF_Token 已失效，将导致提交无响应，刷新页面可解决；三方授权 - 新增查询当前拍拍贷余额功能；债策管理 - 修复绑定显示的错误。</td><tr>
+					<tr><td>2019.05.29</td><td>版本迭代 - 多账户系统配套投标程序上线测试，服务器停机维护，并进行数据迁移。</td><tr>
+					<tr><td>2019.05.20</td><td>版本迭代 - 新版多账户系统测试，完成后将停机维护，进行数据迁移；系统功能 - 去除拍拍贷余额不足提醒，仅保留拍拍猫余额不足提醒。</td><tr>
+					<tr><td>2019.05.18</td><td>贷后管理 - 贷后管理工具前端展示后台更新进度，实现部分后台数据前端化。</td><tr>
+					<tr><td>2019.05.17</td><td>模拟授权 - 优化授权页面，以便对接贷后管理工具付费用户授权系统。</td><tr>
+					<tr><td>2019.05.16</td><td>安全加固 - 贷后管理工具付费用户授权系统加固。</td><tr>
+					<tr><td>2019.05.15</td><td>系统功能 - 贷后管理工具付费用户授权系统正式上线。</td><tr>
+					<tr><td>2019.05.09</td><td>投标记录 - 紧急修复投标(受让)记录初始页面无法翻页的错误</td><tr>
+					<tr><td>2019.05.06</td><td>投标记录 - 投标(受让)记录页面实现 ajax 异步方式刷新数据</td><tr>
+					<tr><td>2019.05.05</td><td>策略管理 - 策略(债权)管理页面实现 ajax 异步方式刷新数据</td><tr>
+					<tr><td>2019.05.03</td><td>系统功能 - 根据反馈，完善提示系统，并修复部分迭代中新增的代码错误</td><tr>
+					<tr><td>2019.05.01</td><td>系统功能 - 全面启用新的提示系统，提示内容更全面，提示方式更友好</td><tr>
+				</tbody>
+			</table>
+		</section>
+
+		<section data-background="#b5533c">
+			<h3>2019年4月</h3>
+			<table style="font-size:19px">
+				<thead><tr><th>日期</th><th>内容</th><tr></thead>
+				<tbody>
+					<tr><td>2019.04.30</td><td>系统功能 - 全面改用 ajax 异步方式刷新页面</td><tr>
+					<tr><td>2019.04.29</td><td>系统功能 - 持续优化交互反馈，减少 50% 的访问量，后台响应更迅速</td><tr>
+					<tr><td>2019.04.26</td><td>系统功能 - 新增收购债权功能，该功能需要定期模拟授权，目前仅支持购买赔债；<br />
+						基准费率：0.5‰；<br />
+						11及以下赔债：基准费率；<br />12赔债：基准费率 * 1.2；<br />
+						13赔债：基准费率 * 1.4；<br />14赔债：基准费率 * 1.6；<br />
+						15赔债：基准费率 * 1.8；<br />16及以上赔债：基准费率 * 2</td><tr>
+				</tbody>
+			</table>
+		</section>
+	</div>
+</div>
+<script src="https://cdn.bootcss.com/reveal.js/3.8.0/js/reveal.min.js"></script>
+<script>
+	// More info https://github.com/hakimel/reveal.js#configuration
+	Reveal.initialize({
+		controls: true,
+		progress: true,
+		center: true,
+		hash: true,
+
+		transition: 'concave', // none/fade/slide/convex/concave/zoom
+		backgroundTransition: 'zoom',
+
+		// More info https://github.com/hakimel/reveal.js#dependencies
+		dependencies: [
+			{ src: 'https://cdn.bootcss.com/reveal.js/3.8.0/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+			{ src: 'https://cdn.bootcss.com/reveal.js/3.8.0/plugin/markdown/markdown.min.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+			{ src: 'https://cdn.bootcss.com/reveal.js/3.8.0/plugin/highlight/highlight.min.js', async: true },
+			{ src: 'https://cdn.bootcss.com/reveal.js/3.8.0/plugin/search/search.min.js', async: true },
+			{ src: 'https://cdn.bootcss.com/reveal.js/3.8.0/plugin/zoom-js/zoom.min.js', async: true }
+		]
+	});
+</script>
+</body>
+</html>
